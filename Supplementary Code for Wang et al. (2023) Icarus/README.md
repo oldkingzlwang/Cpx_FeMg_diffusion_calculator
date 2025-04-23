@@ -43,9 +43,11 @@ Please see the detailed description for the usages in the respective `.m` files.
 ### Traditional Diffusion Chronometry
 
 Diffusion chronometry typically assumes a step-function initial condition based on core and rim compositions:
+
 $$
-C(r, 0) = \begin{cases} C_0 & \text{for } r \leq r_{\text{core}} \\ C_1 & \text{for } r > r_{\text{core}} \end{cases}
+C(r, 0) = \begin{cases} C_0 & \text{for } r \leq r_{\text{core}} & \\ C_1 & \text{for } r > r_{\text{core}} \end{cases}
 $$
+
 This simplification neglects the effects of crystal growth during cooling, which can bias timescale estimates.
 
 ### Growth-Then-Diffusion Concept
@@ -55,10 +57,13 @@ Instead, this method models the Ca profile (a slow diffuser) first, assuming it 
 ### Diffusion Equation
 
 The model solves the 1D radial diffusion equation (Fick’s second law):
+
 $$
 \frac{\partial C}{\partial t} = D(T) \left( \frac{\partial^2 C}{\partial r^2} + \frac{2}{r} \frac{\partial C}{\partial r} \right)
 $$
+
 with Neumann boundary conditions at the center and edge:
+
 $$
 \frac{\partial C}{\partial r} = 0 \quad \text{at } r = 0 \text{ and } r = A
 $$
@@ -67,9 +72,11 @@ $$
 ### Temperature Dependence
 
 Temperature evolves linearly from T<sub>1</sub> to T<sub>2</sub> across the total time interval (i.e., **linear cooling**), and diffusion coefficient D(T) follows the Arrhenius relationship:
+
 $$
 D(T) = D_0 \cdot \exp\left(-\frac{E_a}{R \cdot T} \right)
 $$
+
 Parameters used (according to Müller et al. (2013) for Fe-Mg interdiffusion in clinopyroxene):
 
 - D<sub>0</sub>=2.77×10<sup>5</sup> m<sup>2</sup>/s (pre-exponential factor)
@@ -92,14 +99,10 @@ plot_diffusion(cpx, T1, T2, best_CR, 0.0001, 0.0003, 0.0005);
 
 ## Additional Notes (important!)
 
-1. **Figure Generation**
-   Running the `FeMg_diffusion_figure.m` script will automatically generate five output figures. These correspond directly to the five sub-panels (a–e) in Figure 3 of Wang et al. (2023, *Icarus*), which illustrates the modeled Fe–Mg diffusion profiles in clinopyroxene.
-2. **Alignment of Initial Condition Profiles**
-   The function `rescale_and_shift_to_match` is used within `FeMg_diffusion_figure.m` to align the Ca-derived initial profile with the Fe–Mg diffusion model. However, due to limitations in the current implementation of this function, the resulting profile may not always be perfectly centered at the core–rim boundary. In some cases (e.g., in `cpx4.png` and `cpx5.png`), the initial condition may appear offset from what is shown in the article's Figure 3d and 3e. Manual adjustment may be needed to center the initial condition symmetrically before use in further diffusion modeling.
-3. **Equivalent Diffusion Time Subtraction Method**
-   This code uses an indirect approach—the “equivalent diffusion time subtraction method”—to calculate the Fe–Mg diffusion duration and associated cooling rate. This method subtracts the time required to form the Ca-derived initial profile from the total cooling time. While convenient, it is not equivalent to directly computing the Fe–Mg diffusion using a known initial condition, and may introduce small discrepancies. A more rigorous, direct method should be implemented in future improvements.
-4. **Manual Selection of Cooling Rates**
-   This version of the code does not include automated inversion or fitting of Fe–Mg profiles to observed data. Instead, it reproduces the results of Figure 3 in Wang et al. (2023) based on predefined values of cooling rate. These rates were manually selected by visual comparison during the original study, without optimization algorithms. As such, the reported values are approximate and reflect qualitative rather than quantitatively precise fits.
+1. **Figure Generation**: Running the `FeMg_diffusion_figure.m` script will automatically generate five output figures. These correspond directly to the five sub-panels (a–e) in Figure 3 of Wang et al. (2023, *Icarus*), which illustrates the modeled Fe–Mg diffusion profiles in clinopyroxene.
+2. **Alignment of Initial Condition Profiles**: The function `rescale_and_shift_to_match` is used within `FeMg_diffusion_figure.m` to align the Ca-derived initial profile with the Fe–Mg diffusion model. However, due to limitations in the current implementation of this function, the resulting profile may not always be perfectly centered at the core–rim boundary. In some cases (e.g., in `cpx4.png` and `cpx5.png`), the initial condition may appear offset from what is shown in the article's Figure 3d and 3e. Manual adjustment may be needed to center the initial condition symmetrically before use in further diffusion modeling.
+3. **Equivalent Diffusion Time Subtraction Method**: This code uses an indirect approach—the “equivalent diffusion time subtraction method”—to calculate the Fe–Mg diffusion duration and associated cooling rate. This method subtracts the time required to form the Ca-derived initial profile from the total cooling time. While convenient, it is not equivalent to directly computing the Fe–Mg diffusion using a known initial condition, and may introduce small discrepancies. A more rigorous, direct method should be implemented in future improvements.
+4. **Manual Selection of Cooling Rates**: This version of the code does not include automated inversion or fitting of Fe–Mg profiles to observed data. Instead, it reproduces the results of Figure 3 in Wang et al. (2023) based on predefined values of cooling rate. These rates were manually selected by visual comparison during the original study, without optimization algorithms. As such, the reported values are approximate and reflect qualitative rather than quantitatively precise fits.
 
 
 
